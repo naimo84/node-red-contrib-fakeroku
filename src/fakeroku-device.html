@@ -1,0 +1,29 @@
+<script type="text/javascript">
+    RED
+        .nodes
+        .registerType('fakeroku-device', {
+            category: 'fakeroku',
+            defaults: {
+                confignode: {
+                    value: "",
+                    type: "fakeroku-config"
+                }                
+            },
+            inputs: 0, // set the number of inputs - only 0 or 1
+            outputs: 1, // set the number of outputs - 0 to n         
+            color: "#FFFFFF",
+            label: function () {
+                return "Fakeroku";
+            },
+            icon: "roku-icon.png",
+            paletteLabel: "Control"
+        });
+</script>
+
+<script type="text/x-red" data-template-name="fakeroku-device">
+    <div class="form-row">
+        <label for="node-input-confignode"> Config Node</label>
+        <input type="text" id="node-input-confignode">
+    </div>
+
+</script>

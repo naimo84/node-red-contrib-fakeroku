@@ -1,0 +1,60 @@
+<script type="text/javascript">
+    RED
+        .nodes
+        .registerType('fakeroku-config', {
+            category: 'config',
+            defaults: {
+                ip: {
+                    value: ""
+                },
+                multicast: {
+                    value: "239.255.255.250"
+                },
+                uuid: {
+                    value: ""
+                },
+                port: {
+                    value: "8086"
+                }
+            },
+            oneditprepare: function () {
+                $("#node-config-lookup-uuid").click(function () {
+                    console.log("input click");
+                    $.getJSON('fakeroku_uuid', function (data) {
+                        $("#node-config-input-uuid").val(data);
+                    });
+                });
+            }
+        });
+</script>
+
+<script type="text/x-red" data-template-name="fakeroku-config">
+    <div class="form-row">
+        <label for="node-config-input-ip">
+            <i class="fa fa-tag"></i>
+            LAN IP (not 0.0.0.0):</label>
+        <input type="text" id="node-config-input-ip" placeholder="">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-multicast">
+            <i class="fa fa-tag"></i>
+            Multicast IP:</label>
+        <input type="text" id="node-config-input-multicast" placeholder="239.255.255.250">
+    </div>
+	<div class="form-row">
+        <label for="node-config-input-port">
+            <i class="fa fa-tag"></i>
+            HTTP Port:</label>
+        <input type="text" id="node-config-input-port" placeholder="8086">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-uuid">
+            <i class="fa fa-tag"></i>
+            UUID</label>
+        <input type="text" id="node-config-input-uuid" placeholder="" style="width: 60%">
+        <a id="node-config-lookup-uuid" class="btn">
+            <i id="node-config-lookup-uuid-icon" class="fa fa-plus-square"></i>
+        </a>
+    </div>
+
+</script>

@@ -1,0 +1,50 @@
+{
+  "name": "node-red-contrib-fakeroku",
+  "version": "0.0.1",
+  "description": "NodeRed fakeroku Adapter",
+  "author": {
+    "name": "naimo84",
+    "email": "git@neumann-benjamin.de"
+  },
+  "contributors": [
+    {
+      "name": "naimo",
+      "email": "git@neumann-benjamin.de"
+    }
+  ],
+  "homepage": "https://github.com/naimo84/node-red-contrib-fakeroku",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/naimo84/node-red-contrib-fakeroku"
+    }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "node-red",
+    "fakeroku",
+    "Smart Home",
+    "home automation"
+  ],
+  "node-red": {
+    "nodes": {
+      "fakeroku-config": "dist/fakeroku-config.js",
+      "fakeroku-device": "dist/fakeroku-device.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/naimo84/node-red-contrib-fakeroku"
+  },
+  "dependencies": {
+    "http": "0.0.0",
+    "http-headers": "^3.0.2"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^5.0.1",
+    "typescript": "^3.5.2",
+    "@types/node": "^12.0.10",
+    "@types/node-red": "^0.20.0"
+  }
+}
