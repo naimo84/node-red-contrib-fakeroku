@@ -17,6 +17,9 @@
                     value: "8086"
                 }
             },
+            label: function () {
+                return "FakeRoku";
+            },
             oneditprepare: function () {
                 $("#node-config-lookup-uuid").click(function () {
                     console.log("input click");
@@ -41,7 +44,7 @@
             Multicast IP:</label>
         <input type="text" id="node-config-input-multicast" placeholder="239.255.255.250">
     </div>
-	<div class="form-row">
+    <div class="form-row">
         <label for="node-config-input-port">
             <i class="fa fa-tag"></i>
             HTTP Port:</label>

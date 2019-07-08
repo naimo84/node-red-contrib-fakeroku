@@ -81,13 +81,14 @@ module.exports = function (RED: Red) {
     function startDiscovery(config: Config) {
         socket = createSocket({ type: 'udp4', reuseAddr: true });
         socket.on("error", (error) => {
+            console.error(error);
             stopDiscovery();
         });
 
         socket.on("message", (msg, rinfo) => {
             if (msg.toString().indexOf("M-SEARCH") > -1) {
                 let headers = httpHeaders(msg);
-                console.debug("Remoteinfo: " + rinfo);
+                console.debug("Remoteinfo: " + rinfo.address);
                 if (headers.man === '"ssdp:discover"') {
                     socket.send(device.SSDP_RESPONSE, 0, device.SSDP_RESPONSE.length, rinfo.port, rinfo.address);
                 }
@@ -115,6 +116,7 @@ module.exports = function (RED: Red) {
                         action: message[1],
                         payload: message[2]
                     });
+                    console.debug(message);
                     break;
                 case "launch":
                 case "install":
