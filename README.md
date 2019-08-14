@@ -5,10 +5,11 @@ It may also work with other devices which can control a Roku.
 
 > Node-RED is a tool for wiring together hardware devices, APIs and online services in new and interesting ways.
 
-Maintaining **FakeRoku** is very time-consuming, if you like it, please consider:
+If you like it, please consider:
 
+<a target="blank" href="https://brave.com/nai412"><img src="./examples/support_banner.png"/></a>
 <a target="blank" href="https://paypal.me/NeumannBenjamin"><img src="https://img.shields.io/badge/Donate-PayPal-blue.svg"/></a>
-<a target="blank" href="https://blockchain.info/payment_request?address=3KDjCmXsGFYawmycXRsVwfFbphog117N8P"><img src="https://img.shields.io/badge/Donate-Bitcoin-green.svg"/></a>
+<a target="blank" href="https://blockchain.info/payment_request?address=3KDjCmXsGFYawmycXRsVwfFbphog117N8P"><img src="https://img.shields.io/badge/Donate-Bitcoin-green.svg"/></a> 
 
 ## Getting started
 
