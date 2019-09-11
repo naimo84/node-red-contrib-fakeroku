@@ -19,25 +19,27 @@ export interface Config {
 }
 
 module.exports = function (RED: Red) {
-    let socket: Socket;
-    let server: Server;
-    let device: Device;
-    let configNode: Config;
+   
 
     function FakeRokuNode(config: any) {
+        let socket: Socket;
+        let server: Server;
+        let device: Device;
+        let configNode: Config;
+
         RED.nodes.createNode(this, config);
         configNode = RED.nodes.getNode(config.confignode) as unknown as Config;
         device = init(configNode);
 
-        server = startServer(this);
+        server = startServer(this,device);
         server.listen(configNode.port, configNode.ip);
         this.on('close', function () {
             server.close();
         });
-        startDiscovery(configNode);
+        startDiscovery(configNode,socket,device,this);
     }
 
-    function startServer(node: Node) {
+    function startServer(node: Node,device:Device) {
         return createServer((request: IncomingMessage, response: ServerResponse) => {
             request.connection.ref();
             let method = request.method;
@@ -45,7 +47,7 @@ module.exports = function (RED: Red) {
             let body = [];
 
             request.on('error', (err) => {
-                console.error(err);
+                node.error(err);
             }).on('data', (chunk) => {
                 body.push(chunk);
             }).on('end', () => {
@@ -78,17 +80,17 @@ module.exports = function (RED: Red) {
         });
     }
 
-    function startDiscovery(config: Config) {
+    function startDiscovery(config: Config,socket: Socket,device:Device,node) {
         socket = createSocket({ type: 'udp4', reuseAddr: true });
         socket.on("error", (error) => {
-            console.error(error);
-            stopDiscovery();
+            node.error(error);
+            stopDiscovery(socket);
         });
 
         socket.on("message", (msg, rinfo) => {
             if (msg.toString().indexOf("M-SEARCH") > -1) {
                 let headers = httpHeaders(msg);
-                console.debug("Remoteinfo: " + rinfo.address);
+                node.debug("Remoteinfo: " + rinfo.address);
                 if (headers.man === '"ssdp:discover"') {
                     socket.send(device.SSDP_RESPONSE, 0, device.SSDP_RESPONSE.length, rinfo.port, rinfo.address);
                 }
@@ -97,11 +99,11 @@ module.exports = function (RED: Red) {
 
         socket.bind(1900, "0.0.0.0", () => {
             socket.addMembership((config.multicast && config.multicast.length > 0) ? config.multicast : "239.255.255.250");
-            console.debug("SSDP socket binding on port 1900");
+            node.debug("SSDP socket binding on port 1900");
         });
     }
 
-    function stopDiscovery() {
+    function stopDiscovery(socket: Socket) {
         if (socket) socket.close();
     }
 
@@ -115,12 +117,11 @@ module.exports = function (RED: Red) {
                     node.send({
                         action: message[1],
                         payload: message[2]
-                    });
-                    console.debug(message);
+                    });                    
                     break;
                 case "launch":
                 case "install":
-                    console.debug(message);
+                    node.debug(message);
                     break;
                 default:
                     break;
