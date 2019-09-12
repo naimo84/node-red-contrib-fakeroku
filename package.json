@@ -39,8 +39,7 @@
     "url": "https://github.com/naimo84/node-red-contrib-fakeroku"
   },
   "scripts": {
-    "start": "gulp && node-red",
-    "test": "mocha \"test/**/*_spec.js\"",
+    "start": "gulp && node-red",    
     "release": "gulp && standard-version"
   },
   "husky": {
