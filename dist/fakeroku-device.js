@@ -74,7 +74,12 @@ module.exports = function (RED) {
             }
         });
         socket.bind(1900, "0.0.0.0", function () {
-            socket.addMembership((config.multicast && config.multicast.length > 0) ? config.multicast : "239.255.255.250");
+            try {
+                socket.addMembership((config.multicast && config.multicast.length > 0) ? config.multicast : "239.255.255.250");
+            }
+            catch (error) {
+                node.error(error);
+            }
             node.debug("SSDP socket binding on port 1900");
         });
     }
