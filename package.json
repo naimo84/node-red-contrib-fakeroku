@@ -47,6 +47,10 @@
       "commit-msg": "commitlint --edit"
     }
   },
+  "funding": {
+    "type" : "paypal",
+    "url" : "https://paypal.me/NeumannBenjamin"
+  },
   "dependencies": {
     "http": "0.0.0",
     "http-headers": "^3.0.2"
