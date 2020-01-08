@@ -19,29 +19,20 @@ export interface Config {
 }
 
 module.exports = function (RED: Red) {
-   
+
 
     function FakeRokuNode(config: any) {
         let socket: Socket;
         let server: Server;
         let device: Device;
         let configNode: Config;
-
-        RED.nodes.createNode(this, config);
+        let node = this;
+        RED.nodes.createNode(node, config);
         configNode = RED.nodes.getNode(config.confignode) as unknown as Config;
         device = init(configNode);
 
-        server = startServer(this,device);
-        server.listen(configNode.port, configNode.ip);
-        this.on('close', function () {
-            server.close();
-        });
-        startDiscovery(configNode,socket,device,this);
-    }
-
-    function startServer(node: Node,device:Device) {
-        return createServer((request: IncomingMessage, response: ServerResponse) => {
-            request.connection.ref();
+        server = createServer((request: IncomingMessage, response: ServerResponse) => {
+            //request.connection.ref();
             let method = request.method;
             let url = request.url;
             let body = [];
@@ -77,10 +68,21 @@ module.exports = function (RED: Red) {
                     }
                 }
             });
+        }).on('error', function (e) {
+            // Handle your error here
+            node.error(e);
+            node.status({ fill: "red", shape: "ring", text: e.message });
+        }).listen(configNode.port, configNode.ip, () => {
+            node.debug(`fakeroku listening on ${configNode.ip}:${configNode.port}`)
         });
+
+        node.on('close', function () {
+            server.close();
+        });
+        startDiscovery(configNode, socket, device, node);
     }
 
-    function startDiscovery(config: Config,socket: Socket,device:Device,node) {
+    function startDiscovery(config: Config, socket: Socket, device: Device, node) {
         socket = createSocket({ type: 'udp4', reuseAddr: true });
         socket.on("error", (error) => {
             node.error(error);
@@ -103,7 +105,7 @@ module.exports = function (RED: Red) {
             } catch (error) {
                 node.error(error);
             }
-            
+
             node.debug("SSDP socket binding on port 1900");
         });
     }
@@ -122,7 +124,7 @@ module.exports = function (RED: Red) {
                     node.send({
                         action: message[1],
                         payload: message[2]
-                    });                    
+                    });
                     break;
                 case "launch":
                 case "install":

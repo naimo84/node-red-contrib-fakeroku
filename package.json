@@ -48,26 +48,26 @@
     }
   },
   "funding": {
-    "type" : "paypal",
-    "url" : "https://paypal.me/NeumannBenjamin"
+    "type": "paypal",
+    "url": "https://paypal.me/NeumannBenjamin"
   },
   "dependencies": {
     "http": "0.0.0",
     "http-headers": "^3.0.2"
   },
   "devDependencies": {
+    "@types/node": "^12.12.24",
+    "@types/node-red": "^0.20.1",
+    "commitlint": "^8.3.4",
     "gulp": "^4.0.2",
     "gulp-typescript": "^5.0.1",
-    "commitlint": "^8.1.0",
-    "typescript": "^3.5.2",
-    "@types/node": "^12.0.10",
-    "@types/node-red": "^0.20.0",
+    "husky": "3.0.3",
     "mocha": "6.2.0",
     "node-red": "0.20.7",
     "node-red-node-test-helper": "^0.2.3",
     "should": "13.2.3",
-    "standard-version": "^7.0.0",
-    "husky": "3.0.3"
+    "standard-version": "^7.0.1",
+    "typescript": "^3.7.4"
   },
   "commitlint": {
     "format": {

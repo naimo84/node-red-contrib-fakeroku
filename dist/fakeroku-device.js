@@ -9,19 +9,12 @@ module.exports = function (RED) {
         var server;
         var device;
         var configNode;
-        RED.nodes.createNode(this, config);
+        var node = this;
+        RED.nodes.createNode(node, config);
         configNode = RED.nodes.getNode(config.confignode);
         device = init(configNode);
-        server = startServer(this, device);
-        server.listen(configNode.port, configNode.ip);
-        this.on('close', function () {
-            server.close();
-        });
-        startDiscovery(configNode, socket, device, this);
-    }
-    function startServer(node, device) {
-        return http_1.createServer(function (request, response) {
-            request.connection.ref();
+        server = http_1.createServer(function (request, response) {
+            //request.connection.ref();
             var method = request.method;
             var url = request.url;
             var body = [];
@@ -56,7 +49,17 @@ module.exports = function (RED) {
                     }
                 }
             });
+        }).on('error', function (e) {
+            // Handle your error here
+            node.error(e);
+            node.status({ fill: "red", shape: "ring", text: e.message });
+        }).listen(configNode.port, configNode.ip, function () {
+            node.debug("fakeroku listening on " + configNode.ip + ":" + configNode.port);
         });
+        node.on('close', function () {
+            server.close();
+        });
+        startDiscovery(configNode, socket, device, node);
     }
     function startDiscovery(config, socket, device, node) {
         socket = dgram_1.createSocket({ type: 'udp4', reuseAddr: true });
